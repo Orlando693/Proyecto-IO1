@@ -1,0 +1,22 @@
+# Node (React)
+frontendIO1/node_modules/
+frontendIO1/.vite/
+frontendIO1/dist/
+
+# Python (FastAPI)
+backendIO1/__pycache__/
+backendIO1/*.pyc
+backendIO1/venv/
+backendIO1/.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs y backups
+*.log
+*.bak
+*.tmp
+
+# VSCode settings (opcional)
+.vscode/

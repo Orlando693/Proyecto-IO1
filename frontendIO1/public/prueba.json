@@ -1,0 +1,27 @@
+{
+  "aulas": [
+    { "nombre": "Aula 101", "capacidad": 45, "piso": 1 },
+    { "nombre": "Aula 102", "capacidad": 60, "piso": 2 },
+    { "nombre": "Aula 103", "capacidad": 30, "piso": 1 },
+    { "nombre": "Aula 201", "capacidad": 80, "piso": 2 },
+    { "nombre": "Aula 301", "capacidad": 100, "piso": 3 },
+    { "nombre": "Aula 501", "capacidad": 120, "piso": 5 }
+  ],
+  "grupos": [
+    { "nombre": "Grupo 1", "materia": "Matemáticas", "cantidad": 35 },
+    { "nombre": "Grupo 2", "materia": "Investigación Operativa", "cantidad": 50 },
+    { "nombre": "Grupo 3", "materia": "Programación", "cantidad": 60 },
+    { "nombre": "Grupo 4", "materia": "Econometría", "cantidad": 40 },
+    { "nombre": "Grupo 5", "materia": "Logística", "cantidad": 55 },
+    { "nombre": "Grupo 6", "materia": "Análisis Numérico", "cantidad": 65 },
+    { "nombre": "Grupo 7", "materia": "Administración", "cantidad": 70 }
+  ],
+  "horarios": [
+    "07:00-09:15",
+    "09:15-11:30",
+    "11:30-13:45",
+    "14:00-16:15",
+    "16:15-18:30",
+    "18:30-20:45"
+  ]
+}
