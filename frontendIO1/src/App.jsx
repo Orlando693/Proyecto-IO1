@@ -192,15 +192,23 @@ function App() {
 
         <AsignacionTable asignaciones={asignaciones} />
 
+      {/* NUEVO BLOQUE RESUMEN DE OPTIMIZACION*/}
         {resultIA && (
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mt-10">
-            <h2 className="text-2xl font-bold text-slate-800 mb-4 text-center">
-              Resumen de Optimización
-            </h2>
-            <div className="prose max-w-none text-slate-700 leading-relaxed">
-              {resultIA.split('\n').map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
+          <div className="relative bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mt-12 overflow-hidden">
+            <div className="absolute inset-0 opacity-5">
+              <div className="w-full h-full bg-[linear-gradient(rgba(100,116,139,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(100,116,139,0.3)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+            </div>
+
+            <div className="relative z-10">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-slate-800">Resumen de Optimización</h2>
+                <p className="text-slate-500 text-sm">Análisis generado por el sistema inteligente</p>
+              </div>
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 shadow-inner text-slate-700 leading-relaxed space-y-4 max-h-[400px] overflow-y-auto">
+                {resultIA.split('\n').map((line, index) => (
+                  <p key={index} className="text-sm">{line}</p>
+                ))}
+              </div>
             </div>
           </div>
         )}
