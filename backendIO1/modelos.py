@@ -11,13 +11,10 @@ class Grupo(BaseModel):
     materia: str
     cantidad: int
 
-class Horario(BaseModel):
-    dia: str
-    bloque: str
-
 class EntradaDatos(BaseModel):
     aulas: List[Aula]
     grupos: List[Grupo]
-    horarios: List[Horario]
+    bloques_disponibles: List[str]
     delta: float
     lambda_: float
+

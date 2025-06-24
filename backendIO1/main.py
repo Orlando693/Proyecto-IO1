@@ -20,11 +20,16 @@ def home():
 
 @app.post("/optimizar/")
 def ejecutar_optimizador(entrada: EntradaDatos):
+    """Endpoint para ejecutar el optimizador de asignación de aulas a grupos.
+    Recibe un objeto EntradaDatos con la información de aulas, grupos, bloques disponibles,
+    delta y lambda, y devuelve la asignación óptima de aulas a grupos + resumen de resultados con ia.
+    """
     aulas = [aula.dict() for aula in entrada.aulas]
     grupos = [grupo.dict() for grupo in entrada.grupos]
-    horarios = [horario.dict() for horario in entrada.horarios]
+    bloques_disponibles = entrada.bloques_disponibles
     delta = entrada.delta
     lambda_ = entrada.lambda_
-
-    resultado = optimizar_asignacion(aulas, grupos, horarios, delta, lambda_)
+    resultado = optimizar_asignacion(aulas, grupos, bloques_disponibles, delta, lambda_)
+    print("Resultado de la optimización:", resultado)
     return {"asignacion": resultado}
+
