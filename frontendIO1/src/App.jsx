@@ -5,7 +5,16 @@ import HorarioForm from "./components/HorarioForm"
 import AsignacionTable from "./components/AsignacionTable"
 import ParametrosForm from "./components/ParametrosForm"
 
-import { LayoutList, Users, CalendarDays, Settings } from "lucide-react"
+import {
+  LayoutList,
+  Users,
+  CalendarDays,
+  Settings,
+  TrendingUp,
+  Clock,
+  GraduationCap,
+} from "lucide-react"
+
 import './index.css'
 
 function App() {
@@ -23,7 +32,6 @@ function App() {
   const agregarAula = (aula) => setAulas([...aulas, aula])
   const agregarGrupo = (grupo) => setGrupos([...grupos, grupo])
   const agregarHorario = (bloqueObj) => setHorarios([...horarios, bloqueObj])
-
 
   const totalAlumnos = grupos.reduce((sum, grupo) => sum + grupo.cantidad, 0);
 
@@ -48,7 +56,6 @@ function App() {
     })
       .then(res => res.json())
       .then(data => {
-        // console.log(data)
         setAsignaciones(data.asignacion.asignacion || []);
         setResultIA(data.asignacion.resumen_generado || '');
       })
@@ -69,7 +76,7 @@ function App() {
             Sistema de Optimización
           </h1>
           <p className="text-lg text-slate-500 font-medium">
-            Investigación Operativa Aplicada
+            Investigación Operativa 
           </p>
         </div>
 
@@ -98,14 +105,76 @@ function App() {
           </div>
         </div>
 
-        {/* Resumen */}
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mt-10">
-          <h2 className="text-2xl font-bold text-slate-800 mb-4 text-center">Resumen de Datos Cargados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div><div className="text-3xl font-bold text-blue-600">{aulas.length}</div><div className="text-slate-500 text-sm mt-2">Aulas</div></div>
-            <div><div className="text-3xl font-bold text-green-600">{grupos.length}</div><div className="text-slate-500 text-sm mt-2">Grupos</div></div>
-            <div><div className="text-3xl font-bold text-purple-600">{horarios.length}</div><div className="text-slate-500 text-sm mt-2">Horarios</div></div>
-            <div><div className="text-3xl font-bold text-pink-600">{totalAlumnos}</div><div className="text-slate-500 text-sm mt-2">Alumnos</div></div>
+        {/* RESUMEN */}
+        <div className="h-12"></div>
+        <div className="relative bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8 overflow-hidden">
+          <div className="absolute inset-0 opacity-5">
+            <div className="w-full h-full bg-[linear-gradient(rgba(59,130,246,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.3)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="relative">
+              </div>
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-slate-800 mb-1">Resumen de Datos Cargados</h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border-l-4 border-blue-500 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                      <LayoutList className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">{aulas.length}</div>
+                  <div className="text-slate-600 text-sm font-medium">Aulas Activas</div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-l-4 border-green-500 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold text-green-600 mb-2">{grupos.length}</div>
+                  <div className="text-slate-600 text-sm font-medium">Grupos Activos</div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border-l-4 border-purple-500 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold text-purple-600 mb-2">{horarios.length}</div>
+                  <div className="text-slate-600 text-sm font-medium">Horarios Activos</div>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border-l-4 border-orange-500 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                      <GraduationCap className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold text-orange-600 mb-2">{totalAlumnos}</div>
+                  <div className="text-slate-600 text-sm font-medium">Alumnos Activos</div>
+                </div>
+              </div>
+              <div className="mt-8 pt-6 border-t border-slate-200">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2 text-slate-500">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>Estado del sistema: Operativo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

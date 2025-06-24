@@ -53,8 +53,8 @@ export default function AulaForm({ onAgregarAula, aulas }) {
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
               <BarChart3 className="w-6 h-6 text-white" />
             </div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-400 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-bold">+</span>
+            <div className="#">
+             
             </div>
           </div>
           <div>

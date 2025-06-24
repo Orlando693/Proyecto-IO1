@@ -31,6 +31,10 @@ PROYECTO_IO1_F/
 cd backendIO1
 python -m venv venv
 venv\Scripts\activate  # en Windows
+
+## Lvenatar Backend
+- uvicorn main:app --reload
+
 pip install -r requirements.txt
 
 ### Si no tienes requirements.txt, puedes usar:
@@ -52,7 +56,7 @@ cd frontendIO1
 npm install
 npm run dev
 
-3. ⚙️ Instalación del Solver CBC
+⚙️ Instalación del Solver CBC
 El backend utiliza cbc.exe para resolver el modelo MILP. Asegúrate de:
 
 Descargar CBC desde:

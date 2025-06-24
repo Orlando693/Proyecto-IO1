@@ -56,8 +56,8 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
               <Users className="w-6 h-6 text-white" />
             </div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-400 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-bold">∑</span>
+            <div className="#">
+              
             </div>
           </div>
           <div>
