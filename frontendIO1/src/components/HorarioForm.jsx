@@ -1,17 +1,13 @@
-"use client"
-
 import { useState } from "react"
 import { Clock, Plus, Calendar } from "lucide-react"
 import '../index.css'
 
 export default function HorarioForm({ onAgregarHorario }) {
   const [modalVisible, setModalVisible] = useState(false)
-  const [nuevoDia, setNuevoDia] = useState("")
   const [nuevoBloque, setNuevoBloque] = useState("")
   const [horariosAsignados, setHorariosAsignados] = useState([])
   const [error, setError] = useState("")
 
-  const diasDisponibles = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
   const bloquesDisponibles = [
     "07:00-09:15",
     "09:15-11:30",
@@ -23,35 +19,32 @@ export default function HorarioForm({ onAgregarHorario }) {
 
   const abrirModal = () => {
     setModalVisible(true)
-    setNuevoDia("")
     setNuevoBloque("")
     setError("")
   }
 
   const cerrarModal = () => {
     setModalVisible(false)
-    setNuevoDia("")
     setNuevoBloque("")
     setError("")
   }
 
   const agregarBloque = () => {
-    if (!nuevoDia || !nuevoBloque) {
-      setError("Debe seleccionar día y bloque horario")
+    if (!nuevoBloque) {
+      setError("Debe seleccionar un bloque horario")
       return
     }
 
-    const existe = horariosAsignados.some(h => h.dia === nuevoDia && h.bloque === nuevoBloque)
+    const existe = horariosAsignados.includes(nuevoBloque)
     if (existe) {
       setError("Este bloque ya fue asignado")
       return
     }
 
-    const nuevoHorario = { dia: nuevoDia, bloque: nuevoBloque }
-    const nuevosHorarios = [...horariosAsignados, nuevoHorario]
+    const nuevosHorarios = [...horariosAsignados, nuevoBloque]
 
     setHorariosAsignados(nuevosHorarios)
-    onAgregarHorario(nuevoHorario)
+    onAgregarHorario(nuevoBloque)
     cerrarModal()
   }
 
@@ -66,9 +59,6 @@ export default function HorarioForm({ onAgregarHorario }) {
           <div className="relative">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
               <Calendar className="w-6 h-6 text-white" />
-            </div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-400 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-bold">T</span>
             </div>
           </div>
           <div>
@@ -96,7 +86,7 @@ export default function HorarioForm({ onAgregarHorario }) {
                   <li key={idx} className="flex items-center justify-between bg-purple-50 p-4 rounded-lg">
                     <div className="flex items-center gap-2 text-slate-700 font-medium">
                       <Clock className="w-5 h-5 text-purple-500" />
-                      {bloque.dia} - {bloque.bloque}
+                      {bloque}
                     </div>
                   </li>
                 ))}
@@ -109,23 +99,9 @@ export default function HorarioForm({ onAgregarHorario }) {
       {modalVisible && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4">
-            <h3 className="text-xl font-bold text-slate-800 mb-4">Selecciona día y bloque</h3>
+            <h3 className="text-xl font-bold text-slate-800 mb-4">Selecciona bloque horario</h3>
 
             <div className="space-y-4">
-              <div className="space-y-2">
-                <label>Día</label>
-                <select
-                  value={nuevoDia}
-                  onChange={(e) => setNuevoDia(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300"
-                >
-                  <option value="">Seleccione un día</option>
-                  {diasDisponibles.map((dia) => (
-                    <option key={dia} value={dia}>{dia}</option>
-                  ))}
-                </select>
-              </div>
-
               <div className="space-y-2">
                 <label>Bloque Horario</label>
                 <select

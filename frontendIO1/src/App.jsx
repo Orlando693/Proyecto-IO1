@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import AulaForm from "./components/AulaForm"
 import GrupoForm from "./components/GrupoForm"
@@ -15,6 +13,7 @@ function App() {
   const [grupos, setGrupos] = useState([])
   const [horarios, setHorarios] = useState([])
   const [asignaciones, setAsignaciones] = useState([])
+  const [resultIA, setResultIA] = useState('')
 
   const [delta, setDelta] = useState(0.20)
   const [lambda, setLambda] = useState(1)
@@ -37,7 +36,7 @@ function App() {
     const datos = {
       aulas: aulas,
       grupos: grupos,
-      horarios: horarios,
+      bloques_disponibles: horarios,
       delta: delta,
       lambda_: lambda
     };
@@ -47,14 +46,16 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos)
     })
-    .then(res => res.json())
-    .then(data => {
-      setAsignaciones(data.asignacion || []);
-    })
-    .catch(err => {
-      console.error("Error al comunicarse con el backend:", err);
-      alert("Ocurrió un error al comunicarse con el servidor.");
-    });
+      .then(res => res.json())
+      .then(data => {
+        // console.log(data)
+        setAsignaciones(data.asignacion.asignacion || []);
+        setResultIA(data.asignacion.resumen_generado || '');
+      })
+      .catch(err => {
+        console.error("Error al comunicarse con el backend:", err);
+        alert("Ocurrió un error al comunicarse con el servidor.");
+      });
   };
 
   return (
@@ -109,7 +110,7 @@ function App() {
         </div>
 
         {/* BOTÓN FINAL */}
-       <div className="text-center mt-8">
+        <div className="text-center mt-8">
           <button
             onClick={generarAsignacion}
             className="group relative px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
@@ -118,9 +119,22 @@ function App() {
               <span>Generar Asignación Óptima</span>
             </div>
           </button>
-      </div>
+        </div>
 
         <AsignacionTable asignaciones={asignaciones} />
+
+        {resultIA && (
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mt-10">
+            <h2 className="text-2xl font-bold text-slate-800 mb-4 text-center">
+              Resumen de Optimización
+            </h2>
+            <div className="prose max-w-none text-slate-700 leading-relaxed">
+              {resultIA.split('\n').map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

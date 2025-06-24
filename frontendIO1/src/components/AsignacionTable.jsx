@@ -1,5 +1,3 @@
-"use client"
-
 import { TableProperties, School, BookOpen, Building2, Clock } from "lucide-react"
 
 export default function AsignacionTable({ asignaciones }) {
