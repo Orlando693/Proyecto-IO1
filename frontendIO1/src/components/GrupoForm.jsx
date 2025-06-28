@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
-import { Users, Target, PieChart } from "lucide-react"
-import '../index.css'
+import { Users, Target, PieChart, Plus } from "lucide-react"
+import "../index.css"
 
 export default function GrupoForm({ onAgregarGrupo, grupos }) {
   const [nombre, setNombre] = useState("")
@@ -17,12 +17,12 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
       return
     }
 
-    if (parseInt(cantidad) <= 0) {
+    if (Number.parseInt(cantidad) <= 0) {
       setError("La cantidad debe ser mayor a 0")
       return
     }
 
-    const existe = grupos.some(grupo => grupo.nombre.toLowerCase() === nombre.toLowerCase())
+    const existe = grupos.some((grupo) => grupo.nombre.toLowerCase() === nombre.toLowerCase())
     if (existe) {
       setError("Ya existe un grupo con ese nombre")
       return
@@ -41,37 +41,51 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
   }
 
   return (
-    <div className="relative bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8 overflow-hidden">
-      {/* Mathematical grid background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="w-full h-full bg-[linear-gradient(rgba(34,197,94,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.3)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+    <div className="relative bg-gradient-to-br from-white via-slate-50/30 to-white rounded-3xl shadow-2xl border border-slate-200/60 p-10 mb-12 overflow-hidden backdrop-blur-sm">
+      {/* Enhanced Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div className="w-full h-full bg-[radial-gradient(circle_at_70%_30%,rgba(34,197,94,0.3)_0%,transparent_50%),linear-gradient(rgba(34,197,94,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.1)_1px,transparent_1px)] bg-[size:300px_300px,24px_24px,24px_24px]" />
       </div>
 
-      {/* Mathematical formula decoration */}
-      <div className="absolute top-4 right-4 text-green-100 text-sm font-mono opacity-20">min Σ cᵢⱼxᵢⱼ</div>
+      {/* Floating Decorative Elements */}
+      <div className="absolute top-4 right-8 w-20 h-20 bg-gradient-to-br from-green-100/30 to-blue-100/20 rounded-full animate-pulse"></div>
+      <div
+        className="absolute bottom-6 left-6 w-16 h-16 bg-gradient-to-br from-blue-100/30 to-green-100/20 rounded-full animate-pulse"
+        style={{ animationDelay: "1s" }}
+      ></div>
 
+      {/* Mathematical Formula */}
+      <div className="absolute top-6 right-6 text-green-200/40 text-sm font-mono">min Σ cᵢⱼxᵢⱼ</div>
+
+      {/* Gradient Border */}
       <div className="relative z-10">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Users className="w-6 h-6 text-white" />
+        <div className="flex items-center gap-6 mb-10">
+          <div className="relative group">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-500 via-green-600 to-green-700 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all duration-300">
+              <Users className="w-8 h-8 text-white" />
             </div>
-            <div className="#">
-              
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-400 rounded-full flex items-center justify-center animate-pulse">
+              <Plus className="w-3 h-3 text-white" />
             </div>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-1">Asignar Grupo</h2>
-            <p className="text-slate-500 text-sm">Minimizar conflictos de programación</p>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent mb-2">
+              Asignar Grupo
+            </h2>
+            <p className="text-slate-600 font-medium">Minimizar conflictos de programación</p>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-slate-500">Optimización de recursos activa</span>
+            </div>
           </div>
         </div>
 
-        <form onSubmit={manejarEnvio} className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <form onSubmit={manejarEnvio} className="space-y-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Nombre del Grupo */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <div className="group space-y-4">
+              <label className="flex items-center gap-3 text-sm font-bold text-slate-700">
+                <div className="w-3 h-3 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-sm"></div>
                 Identificador del Grupo
               </label>
               <div className="relative">
@@ -79,19 +93,19 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
                   type="text"
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 bg-slate-50/50"
+                  className="w-full pl-6 pr-14 py-4 border-2 border-slate-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100/50 transition-all duration-300 bg-gradient-to-r from-slate-50/50 to-white shadow-sm hover:shadow-md group-hover:border-slate-300"
                   placeholder="Grupo Alpha"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                  <Target className="w-4 h-4" />
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-green-500 transition-colors duration-200">
+                  <Target className="w-5 h-5" />
                 </div>
               </div>
             </div>
 
             {/* Materia */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <div className="group space-y-4">
+              <label className="flex items-center gap-3 text-sm font-bold text-slate-700">
+                <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-sm"></div>
                 Área de Conocimiento
               </label>
               <div className="relative">
@@ -99,19 +113,19 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
                   type="text"
                   value={materia}
                   onChange={(e) => setMateria(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 bg-slate-50/50"
+                  className="w-full pl-6 pr-14 py-4 border-2 border-slate-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100/50 transition-all duration-300 bg-gradient-to-r from-slate-50/50 to-white shadow-sm hover:shadow-md group-hover:border-slate-300"
                   placeholder="Investigación Operativa"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                  <PieChart className="w-4 h-4" />
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors duration-200">
+                  <PieChart className="w-5 h-5" />
                 </div>
               </div>
             </div>
 
             {/* Cantidad de Estudiantes */}
-            <div className="space-y-3 lg:col-span-2">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+            <div className="group space-y-4 lg:col-span-2">
+              <label className="flex items-center gap-3 text-sm font-bold text-slate-700">
+                <div className="w-3 h-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full shadow-sm"></div>
                 Tamaño del Conjunto
               </label>
               <div className="relative">
@@ -119,10 +133,10 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
                   type="number"
                   value={cantidad}
                   onChange={(e) => setCantidad(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-300 bg-slate-50/50"
+                  className="w-full pl-6 pr-14 py-4 border-2 border-slate-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-100/50 transition-all duration-300 bg-gradient-to-r from-slate-50/50 to-white shadow-sm hover:shadow-md group-hover:border-slate-300"
                   placeholder="25"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 font-mono text-sm">
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 font-mono text-lg group-focus-within:text-orange-500 transition-colors duration-200">
                   n
                 </div>
               </div>
@@ -131,17 +145,29 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
 
           {/* Mensaje de error */}
           {error && (
-            <div className="text-red-500 text-sm">{error}</div>
+            <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700">
+              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+              <span className="text-sm font-medium">{error}</span>
+            </div>
           )}
 
-          {/* ✅ Solo cambiamos el texto del botón */}
-          <div className="pt-4">
+          {/* Botón mejorado */}
+          <div className="pt-6">
             <button
               type="submit"
-              className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+              className="group relative w-full overflow-hidden rounded-2xl bg-green-600 hover:bg-green-700 px-8 py-5 text-white font-bold text-lg shadow-2xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1"
             >
-              <div className="flex items-center justify-center gap-3">
+              <div className="absolute inset-0 bg-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="relative flex items-center justify-center gap-3">
+                <Users className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
                 <span>Agregar Grupo</span>
+                <div className="w-2 h-2 bg-white/80 rounded-full animate-pulse"></div>
+              </div>
+
+              {/* Shine Effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                <div className="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 group-hover:left-full transition-all duration-1000"></div>
               </div>
             </button>
           </div>
