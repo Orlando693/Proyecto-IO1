@@ -20,13 +20,18 @@ app = FastAPI(
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://localhost:8002",
+        "https://io1.devhoo.me",
+        "https://www.io1.devhoo.me",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
-# Incluir routers
 app.include_router(auth, prefix="/api/auth")
 app.include_router(user, prefix="/api")
 app.include_router(optimization, prefix="/api")
@@ -63,7 +68,6 @@ def ejecutar_optimizador(
     aulas = [aula.dict() for aula in entrada.aulas]
     grupos = [grupo.dict() for grupo in entrada.grupos]
     
-    # Procesar bloques_disponibles: extraer solo el campo 'bloque' de los objetos BloqueHorario
     bloques_disponibles = [bloque.bloque for bloque in entrada.bloques_disponibles]
     print(f"Bloques procesados: {bloques_disponibles}")  # Debug
     
