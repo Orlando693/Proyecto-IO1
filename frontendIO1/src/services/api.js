@@ -1,13 +1,15 @@
 import axios from 'axios';
 
+// Configuración de la API
 // const API_BASE_URL = 'http://localhost:8000/api';
-const API_BASE_URL = 'https://api.io1.devhoo.me'
+const API_BASE_URL = 'https://api.io1.devhoo.me/api'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 30000, // 30 segundos timeout
 });
 
 api.interceptors.request.use(
@@ -24,6 +26,17 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Manejo específico de errores CORS
+    if (error.code === 'ERR_NETWORK') {
+      console.error('❌ Error de red - posiblemente CORS:', error);
+      return Promise.reject({
+        message: 'Error de conexión. Verifica que el servidor esté funcionando y que CORS esté configurado correctamente.',
+        type: 'NETWORK_ERROR',
+        originalError: error
+      });
+    }
+    
+    // Manejo de errores de autenticación
     if (error.response?.status === 401) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
@@ -32,7 +45,8 @@ api.interceptors.response.use(
         window.location.href = '/login';
       }
     }
-    return Promise.reject(error?.response?.data || error.message || error.response.statusText || 'An error occurred');
+    
+    return Promise.reject(error?.response?.data || error.message || error.response?.statusText || 'An error occurred');
   }
 );
 
@@ -112,6 +126,53 @@ export const optimizationService = {
     const response = await api.delete(`/optimizations/${optimizationId}`);
     return response.data;
   },
+};
+
+// Servicio de prueba para verificar conectividad y CORS
+export const testService = {
+  // Probar conectividad básica
+  testConnection: async () => {
+    try {
+      const response = await api.get('/');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error };
+    }
+  },
+  
+  // Probar health check
+  testHealth: async () => {
+    try {
+      const response = await api.get('/health');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error };
+    }
+  },
+  
+  // Probar información de CORS
+  testCORS: async () => {
+    try {
+      const response = await api.get('/cors-info');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error };
+    }
+  },
+  
+  // Ejecutar todas las pruebas
+  runAllTests: async () => {
+    console.log('🧪 Ejecutando pruebas de conectividad...');
+    
+    const results = {
+      connection: await testService.testConnection(),
+      health: await testService.testHealth(),
+      cors: await testService.testCORS(),
+    };
+    
+    console.log('📊 Resultados de las pruebas:', results);
+    return results;
+  }
 };
 
 export default api;

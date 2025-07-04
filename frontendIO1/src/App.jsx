@@ -12,6 +12,7 @@ import LoginPage from "./components/Loginpage"
 import RegisterPage from "./components/RegisterPage"
 import RutaPrivada from "./components/RutaPrivada"
 import LayoutPrivado from "./components/LayoutPrivado"
+import CORSDebugger from "./components/CORSDebugger"
 import { AuthProvider } from "./contexts/AuthContext"
 
 import { LayoutList, Users, CalendarDays, Settings, Clock, GraduationCap, Zap, TrendingUp } from "lucide-react"
@@ -798,6 +799,9 @@ export default function App() {
           </Route>
         </Route>
       </Routes>
+      
+      {/* CORS Debugger - solo en desarrollo */}
+      {import.meta.env.DEV && <CORSDebugger />}
     </AuthProvider>
   )
 }
