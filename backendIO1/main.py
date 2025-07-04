@@ -113,6 +113,34 @@ def ejecutar_optimizador(
     
     return {"asignacion": resultado}
 
+@app.get("/api/jwt-debug")
+def jwt_debug():
+    """Endpoint para diagnosticar el estado de JWT"""
+    try:
+        from dependencies import create_access_token, verify_token
+        import jwt as pyjwt
+        from datetime import timedelta
+        
+        # Probar creación de token
+        test_token = create_access_token({"sub": "test"}, timedelta(minutes=5))
+        
+        # Probar verificación
+        user_id = verify_token(test_token)
+        
+        return {
+            "jwt_working": True,
+            "pyjwt_version": pyjwt.__version__,
+            "test_token_created": True,
+            "test_token_verified": True,
+            "test_user_id": user_id
+        }
+    except Exception as e:
+        return {
+            "jwt_working": False,
+            "error": str(e),
+            "error_type": type(e).__name__
+        }
+
 # Evento de inicio para crear las tablas
 @app.on_event("startup")
 def startup_event():

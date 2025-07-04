@@ -2,7 +2,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from database import engine
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-import jwt
+import jwt as pyjwt
 from datetime import datetime, timedelta
 import os
 
@@ -32,13 +32,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = pyjwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 def verify_token(token: str):
     """Verificar y decodificar token JWT"""
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = pyjwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
         if user_id is None:
             raise HTTPException(
