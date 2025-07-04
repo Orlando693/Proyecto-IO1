@@ -1,6 +1,9 @@
 import pulp # Esta librería es como el "cerebro" que nos ayuda a resolver problemas de optimización.
 import openai # Esta librería nos permite usar la inteligencia artificial de OpenAI para generar textos.
 import os # Nos ayuda a leer configuraciones importantes de nuestro sistema, como la clave de OpenAI.
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def optimizar_asignacion(aulas, grupos, bloques_disponibles, delta, lambda_):
     """
@@ -18,6 +21,29 @@ def optimizar_asignacion(aulas, grupos, bloques_disponibles, delta, lambda_):
     - lambda_: Un factor que indica qué tan importante es para nosotros penalizar el espacio que
                no se utiliza de forma eficiente en las aulas.
     """
+    
+    # --- Validación previa de datos ---
+    # Verificamos si hay algún grupo que no puede ser asignado a ninguna aula
+    max_capacidad_aula = max(aula["capacidad"] for aula in aulas)
+    grupos_problematicos = [
+        grupo for grupo in grupos 
+        if grupo["cantidad"] > max_capacidad_aula
+    ]
+    
+    if grupos_problematicos:
+        error_msg = f"Error: Los siguientes grupos no pueden ser asignados porque exceden la capacidad máxima de las aulas (máximo: {max_capacidad_aula}):\n"
+        for grupo in grupos_problematicos:
+            error_msg += f"- Grupo '{grupo['nombre']}' ({grupo['materia']}): {grupo['cantidad']} estudiantes\n"
+        error_msg += "\nSoluciones posibles:\n"
+        error_msg += "1. Aumentar la capacidad de las aulas existentes\n"
+        error_msg += "2. Dividir los grupos grandes en grupos más pequeños\n"
+        error_msg += "3. Añadir nuevas aulas con mayor capacidad"
+        
+        return {
+            "error": error_msg,
+            "grupos_problematicos": grupos_problematicos,
+            "capacidad_maxima_disponible": max_capacidad_aula
+        }
 
     # --- Configuración de la Inteligencia Artificial (OpenAI) ---
     # Aquí preparamos la conexión con el servicio de inteligencia artificial.
@@ -194,8 +220,34 @@ def optimizar_asignacion(aulas, grupos, bloques_disponibles, delta, lambda_):
                                 })
     else: # Si el solucionador no encontró una solución óptima (por ejemplo, es imposible con las reglas dadas)
         print(f"El problema no tiene una solución óptima. Estado del solucionador: {pulp.LpStatus[prob.status]}")
-        # Devolvemos un mensaje de error para que el usuario sepa qué pasó.
-        return {"error": f"El problema de optimización no tiene una solución óptima. Estado del solucionador: {pulp.LpStatus[prob.status]}"}
+        
+        # Análisis más detallado del problema
+        error_msg = f"El problema de optimización no tiene una solución viable. Estado: {pulp.LpStatus[prob.status]}\n\n"
+        
+        if prob.status == pulp.LpStatusInfeasible:
+            error_msg += "Posibles causas:\n"
+            error_msg += "1. Capacidad insuficiente: No hay suficientes aulas o capacidad para todos los grupos\n"
+            error_msg += "2. Horarios insuficientes: No hay suficientes bloques de tiempo disponibles\n"
+            error_msg += "3. Restricciones muy estrictas: Los parámetros delta y lambda pueden ser muy restrictivos\n\n"
+            
+            # Información adicional para debugging
+            total_estudiantes = sum(grupo["cantidad"] for grupo in grupos)
+            total_capacidad_por_bloque = sum(aula["capacidad"] for aula in aulas)
+            bloques_count = len(bloques_disponibles)
+            patrones_count = 2  # LMV y MJ
+            
+            error_msg += f"Estadísticas del problema:\n"
+            error_msg += f"- Total de estudiantes: {total_estudiantes}\n"
+            error_msg += f"- Capacidad total por bloque: {total_capacidad_por_bloque}\n"
+            error_msg += f"- Bloques disponibles: {bloques_count}\n"
+            error_msg += f"- Patrones de días: {patrones_count} (LMV, MJ)\n"
+            error_msg += f"- Capacidad teórica total: {total_capacidad_por_bloque * bloques_count * patrones_count}\n\n"
+            
+            if total_estudiantes > total_capacidad_por_bloque:
+                error_msg += "⚠️ PROBLEMA DETECTADO: Hay más estudiantes que capacidad disponible por bloque de tiempo.\n"
+                error_msg += "Solución: Añadir más aulas o aumentar la capacidad de las existentes.\n"
+        
+        return {"error": error_msg}
 
     # --- Paso 7: Generación del Resumen y Análisis con Inteligencia Artificial ---
     # Una vez que tenemos las asignaciones, utilizamos OpenAI para generar un resumen

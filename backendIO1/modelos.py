@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Union
 
 class Aula(BaseModel):
     nombre: str
@@ -11,10 +11,15 @@ class Grupo(BaseModel):
     materia: str
     cantidad: int
 
+class BloqueHorario(BaseModel):
+    id: int
+    bloque: str
+    fechaCreacion: str
+
 class EntradaDatos(BaseModel):
     aulas: List[Aula]
     grupos: List[Grupo]
-    bloques_disponibles: List[str]
+    bloques_disponibles: List[BloqueHorario]
     delta: float
     lambda_: float
 
