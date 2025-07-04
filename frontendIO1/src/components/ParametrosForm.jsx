@@ -18,7 +18,7 @@ export default function ParametrosForm({ delta, setDelta, lambda, setLambda }) {
   }
 
   return (
-    <div className="relative bg-gradient-to-br from-white via-slate-50/30 to-white rounded-3xl shadow-2xl border border-slate-200/60 p-10 mb-12 overflow-hidden backdrop-blur-sm">
+    <div lassName="relative bg-transparent md:bg-gradient-to-br md:from-white md:via-slate-50/30 md:to-white rounded-3xl md:shadow-2xl md:border border-slate-200/60 md:p-10 mb-12 overflow-hidden md:backdrop-blur-sm">
       {/* Enhanced Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="w-full h-full bg-[radial-gradient(circle_at_40%_60%,rgba(234,179,8,0.3)_0%,transparent_50%),linear-gradient(rgba(234,179,8,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(234,179,8,0.1)_1px,transparent_1px)] bg-[size:300px_300px,24px_24px,24px_24px]" />
@@ -37,7 +37,7 @@ export default function ParametrosForm({ delta, setDelta, lambda, setLambda }) {
       {/* Gradient Border */}
 
       <div className="relative z-10">
-        <div className="flex items-center gap-6 mb-10">
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
           <div className="relative group">
             <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 via-yellow-600 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all duration-300">
               <Settings className="w-8 h-8 text-white" />

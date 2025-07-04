@@ -1,9 +1,9 @@
 "use client"
 import { useState } from "react"
-import { Users, Target, PieChart, Plus } from "lucide-react"
+import { Users, Target, PieChart, Plus, Trash2, BookOpen } from "lucide-react"
 import "../index.css"
 
-export default function GrupoForm({ onAgregarGrupo, grupos }) {
+export default function GrupoForm({ onAgregarGrupo, grupos = [] }) {
   const [nombre, setNombre] = useState("")
   const [materia, setMateria] = useState("")
   const [cantidad, setCantidad] = useState("")
@@ -29,6 +29,7 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
     }
 
     onAgregarGrupo({
+      id: Date.now(),
       nombre,
       materia,
       cantidad: Number.parseInt(cantidad),
@@ -40,8 +41,12 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
     setError("")
   }
 
+  const eliminarGrupo = (id) => {
+    console.log("Eliminar grupo:", id)
+  }
+
   return (
-    <div className="relative bg-gradient-to-br from-white via-slate-50/30 to-white rounded-3xl shadow-2xl border border-slate-200/60 p-10 mb-12 overflow-hidden backdrop-blur-sm">
+    <div className="relative bg-transparent md:bg-gradient-to-br md:from-white md:via-slate-50/30 md:to-white rounded-3xl md:shadow-2xl md:border border-slate-200/60 md:p-10 mb-12 overflow-hidden md:backdrop-blur-sm">
       {/* Enhanced Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="w-full h-full bg-[radial-gradient(circle_at_70%_30%,rgba(34,197,94,0.3)_0%,transparent_50%),linear-gradient(rgba(34,197,94,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.1)_1px,transparent_1px)] bg-[size:300px_300px,24px_24px,24px_24px]" />
@@ -59,7 +64,7 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
 
       {/* Gradient Border */}
       <div className="relative z-10">
-        <div className="flex items-center gap-6 mb-10">
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
           <div className="relative group">
             <div className="w-16 h-16 bg-gradient-to-br from-green-500 via-green-600 to-green-700 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all duration-300">
               <Users className="w-8 h-8 text-white" />
@@ -172,6 +177,56 @@ export default function GrupoForm({ onAgregarGrupo, grupos }) {
             </button>
           </div>
         </form>
+
+        {grupos.length > 0 && (
+          <div className="mt-12 bg-gradient-to-br from-slate-50/50 to-white rounded-2xl border border-slate-200/60 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800">Grupos Configurados</h3>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-sm text-slate-600">{grupos.length} grupos</span>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {grupos.map((grupo, idx) => (
+                <div
+                  key={grupo.id || idx}
+                  className="group flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-white font-bold text-sm">#{idx + 1}</span>
+                    </div>
+                    <div>
+                      <div className="text-slate-800 font-bold text-lg">{grupo.nombre}</div>
+                      <div className="text-slate-500 text-sm flex items-center gap-4">
+                        <span>Materia: {grupo.materia}</span>
+                        <span>Estudiantes: {grupo.cantidad}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm text-slate-600 font-medium">Activo</span>
+                    </div>
+                    <button
+                      onClick={() => eliminarGrupo(grupo.id || idx)}
+                      className="w-8 h-8 bg-red-100 hover:bg-red-200 rounded-lg flex items-center justify-center transition-colors duration-200 group-hover:scale-110"
+                      title="Eliminar grupo"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-600" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

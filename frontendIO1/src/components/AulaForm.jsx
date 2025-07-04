@@ -1,9 +1,9 @@
 "use client"
 import { useState } from "react"
-import { BarChart3, Calculator, TrendingUp, Plus } from "lucide-react"
+import { BarChart3, Calculator, TrendingUp, Plus, Trash2, Building2 } from "lucide-react"
 import "../index.css"
 
-export default function AulaForm({ onAgregarAula, aulas }) {
+export default function AulaForm({ onAgregarAula, aulas = [] }) {
   const [nombre, setNombre] = useState("")
   const [capacidad, setCapacidad] = useState("")
   const [piso, setPiso] = useState("1")
@@ -29,6 +29,7 @@ export default function AulaForm({ onAgregarAula, aulas }) {
     }
 
     onAgregarAula({
+      id: Date.now(),
       nombre,
       capacidad: Number.parseInt(capacidad),
       piso: Number.parseInt(piso),
@@ -40,8 +41,13 @@ export default function AulaForm({ onAgregarAula, aulas }) {
     setError("")
   }
 
+  const eliminarAula = (id) => {
+    // This would need to be implemented in the parent component
+    console.log("Eliminar aula:", id)
+  }
+
   return (
-    <div className="relative bg-gradient-to-br from-white via-slate-50/30 to-white rounded-3xl shadow-2xl border border-slate-200/60 p-10 mb-12 overflow-hidden backdrop-blur-sm">
+    <div className="relative bg-transparent md:bg-gradient-to-br md:from-white md:via-slate-50/30 md:to-white rounded-3xl md:shadow-2xl md:border border-slate-200/60 md:p-10 mb-12 overflow-hidden md:backdrop-blur-sm">
       {/* Enhanced Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.3)_0%,transparent_50%),linear-gradient(rgba(59,130,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.1)_1px,transparent_1px)] bg-[size:300px_300px,24px_24px,24px_24px]" />
@@ -59,7 +65,7 @@ export default function AulaForm({ onAgregarAula, aulas }) {
 
       {/* Gradient Border */}
       <div className="relative z-10">
-        <div className="flex items-center gap-6 mb-10">
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
           <div className="relative group">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all duration-300">
               <BarChart3 className="w-8 h-8 text-white" />
@@ -179,6 +185,56 @@ export default function AulaForm({ onAgregarAula, aulas }) {
             </button>
           </div>
         </form>
+
+        {aulas.length > 0 && (
+          <div className="mt-12 bg-gradient-to-br from-slate-50/50 to-white rounded-2xl border border-slate-200/60 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                <Building2 className="w-4 h-4 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800">Aulas Configuradas</h3>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span className="text-sm text-slate-600">{aulas.length} aulas</span>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {aulas.map((aula, idx) => (
+                <div
+                  key={aula.id || idx}
+                  className="group flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-white font-bold text-sm">#{idx + 1}</span>
+                    </div>
+                    <div>
+                      <div className="text-slate-800 font-bold text-lg">{aula.nombre}</div>
+                      <div className="text-slate-500 text-sm flex items-center gap-4">
+                        <span>Capacidad: {aula.capacidad} estudiantes</span>
+                        <span>Piso: {aula.piso}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm text-slate-600 font-medium">Disponible</span>
+                    </div>
+                    <button
+                      onClick={() => eliminarAula(aula.id || idx)}
+                      className="w-8 h-8 bg-red-100 hover:bg-red-200 rounded-lg flex items-center justify-center transition-colors duration-200 group-hover:scale-110"
+                      title="Eliminar aula"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-600" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
